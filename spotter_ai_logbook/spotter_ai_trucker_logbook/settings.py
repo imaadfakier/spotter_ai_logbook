@@ -79,7 +79,12 @@ WSGI_APPLICATION = "spotter_ai_trucker_logbook.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {"default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))}
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        engine="django.db.backends.postgresql"  # Set this to match your database
+    )
+}
 # The configuration will work if we are not relying on external libraries, but for deployment
 # If you use dj_database_url, it will use that for local
 
