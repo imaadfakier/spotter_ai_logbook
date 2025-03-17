@@ -130,4 +130,5 @@ CORS_ORIGIN_ALLOW_ALL = False  # Change to True only for development
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",  # Replace with your React frontend's origin
     "http://localhost:8000",
+    "https://spotter-ai-logbook-react-frontend.vercel.app"
 ]
