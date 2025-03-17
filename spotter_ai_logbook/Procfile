@@ -1,1 +1,0 @@
-web: gunicorn spotter_ai_trucker_logbook.wsgi
