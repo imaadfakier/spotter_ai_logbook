@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get("DEBUG")
 
-ALLOWED_HOSTS = ["*"]  # os.environ.get('ALLOWED_HOSTS').split(",")
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
@@ -79,7 +79,12 @@ WSGI_APPLICATION = "spotter_ai_trucker_logbook.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {"default": dj_database_url.config(default=os.environ.get("DATABASE_URL"))}
+DATABASES = {
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        engine="django.db.backends.postgresql"  # Set this to match your database
+    )
+}
 # The configuration will work if we are not relying on external libraries, but for deployment
 # If you use dj_database_url, it will use that for local
 
@@ -130,4 +135,5 @@ CORS_ORIGIN_ALLOW_ALL = False  # Change to True only for development
 CORS_ORIGIN_WHITELIST = [
     "http://localhost:3000",  # Replace with your React frontend's origin
     "http://localhost:8000",
+    "https://spotter-ai-logbook-react-frontend.vercel.app"
 ]
