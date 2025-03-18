@@ -277,7 +277,7 @@ def get_osrm_route(request):
 
     # Construct the OSRM URL dynamically
     coordinates = f"{start};{via};{end}" if via else f"{start};{end}"
-    osrm_url = f"http://router.project-osrm.org/route/v1/driving/{coordinates}?overview=false&alternatives=true&steps=true"
+    osrm_url = f"https://router.project-osrm.org/route/v1/driving/{coordinates}?overview=false&alternatives=true&steps=true"
 
     try:
         response = requests.get(osrm_url)
