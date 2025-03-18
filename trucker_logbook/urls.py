@@ -44,4 +44,5 @@ urlpatterns = [
         views.DailySummaryDetailView.as_view(),
         name="daily-summary-detail",
     ),  # New endpoint
+    path("get-osrm-route/", views.get_osrm_route, name="get_osrm_route"),
 ]

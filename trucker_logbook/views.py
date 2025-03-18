@@ -16,6 +16,8 @@ from .serialisers import (
 from django.shortcuts import get_object_or_404
 from datetime import timedelta
 from .helper import generate_dummy_logs, delete_all_data
+import requests
+from django.http import JsonResponse
 
 delete_all_data()
 
@@ -256,3 +258,30 @@ class ConfigurationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIVi
 
     queryset = Configuration.objects.all()
     serializer_class = ConfigurationSerializer
+
+
+@api_view(["GET"])
+def get_osrm_route(request):
+    """
+    API endpoint to fetch a route from OSRM.
+    Expects query parameters: start, via, end.
+    Example: /get-osrm-route/?start=-80.1936,25.7742&via=-81.379,28.5421&end=-81.6556,30.3322
+    """
+
+    start = request.GET.get("start")  # e.g., "-80.1936,25.7742"
+    via = request.GET.get("via")  # Optional waypoint
+    end = request.GET.get("end")  # e.g., "-81.6556,30.3322"
+
+    if not start or not end:
+        return JsonResponse({"error": "Missing required parameters"}, status=400)
+
+    # Construct the OSRM URL dynamically
+    coordinates = f"{start};{via};{end}" if via else f"{start};{end}"
+    osrm_url = f"http://router.project-osrm.org/route/v1/driving/{coordinates}?overview=false&alternatives=true&steps=true"
+
+    try:
+        response = requests.get(osrm_url)
+        response.raise_for_status()  # Raise an error for non-200 responses
+        return JsonResponse(response.json(), safe=False)
+    except requests.RequestException as e:
+        return JsonResponse({"error": str(e)}, status=500)
